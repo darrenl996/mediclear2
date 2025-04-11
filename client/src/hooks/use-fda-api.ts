@@ -12,18 +12,25 @@ export const useSearchMedications = (query: string) => {
         return [];
       }
       
+      console.log(`[FDA API] Searching for: "${query}"`);
+      
       const res = await fetch(`/api/drugs/search?q=${encodeURIComponent(query.trim())}`, {
         credentials: 'include',
       });
       
       if (!res.ok) {
         if (res.status === 404) {
+          console.log(`[FDA API] No results found for: "${query}"`);
           return [];
         }
-        throw new Error(`Error searching medications: ${res.statusText}`);
+        const errorMsg = `Error searching medications: ${res.statusText}`;
+        console.error(`[FDA API] ${errorMsg}`);
+        throw new Error(errorMsg);
       }
       
-      return res.json() as Promise<MedicationSearchResult[]>;
+      const data = await res.json() as MedicationSearchResult[];
+      console.log(`[FDA API] Found ${data.length} results for: "${query}"`);
+      return data;
     },
     enabled: query.length > 2, // Only run query when user has typed at least 3 characters
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -63,15 +70,21 @@ export const useMedicationDetails = (id: string | null) => {
     queryFn: async () => {
       if (!id) return null;
       
+      console.log(`[FDA API] Fetching details for medication ID: ${id}`);
+      
       const res = await fetch(`/api/drugs/${id}`, {
         credentials: 'include',
       });
       
       if (!res.ok) {
-        throw new Error(`Error fetching medication details: ${res.statusText}`);
+        const errorMsg = `Error fetching medication details: ${res.statusText}`;
+        console.error(`[FDA API] ${errorMsg}`);
+        throw new Error(errorMsg);
       }
       
-      return res.json() as Promise<MedicationSearchResult>;
+      const data = await res.json() as MedicationSearchResult;
+      console.log(`[FDA API] Successfully retrieved details for: ${data.generic_name}`);
+      return data;
     },
     enabled: !!id,
     staleTime: 1000 * 60 * 10, // 10 minutes

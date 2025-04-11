@@ -108,12 +108,20 @@ export default function Home() {
 
       {/* Empty State */}
       {!searchLoading && searchTerm.length > 0 && searchResults.length === 0 && !searchError && (
-        <div className="text-center py-10">
+        <div className="text-center py-10 max-w-md mx-auto bg-white p-6 rounded-lg shadow-sm border border-gray-100">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
           <h3 className="mt-4 text-lg font-medium text-gray-900">No medications found</h3>
           <p className="mt-1 text-gray-500">Try searching for a different medication name.</p>
+          <div className="mt-4">
+            <button 
+              onClick={handleClearSearch} 
+              className="text-primary-600 hover:text-primary-800 font-medium"
+            >
+              Clear search
+            </button>
+          </div>
         </div>
       )}
 
@@ -137,15 +145,31 @@ export default function Home() {
 
       {/* Search Results */}
       {!selectedMedicationId && searchResults.length > 0 && (
-        <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {searchResults.map((medication) => (
-            <MedicationCard
-              key={medication.id}
-              medication={medication}
-              onClick={() => handleSelectMedication(medication.id || "")}
-            />
-          ))}
-        </div>
+        <>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-medium text-gray-900">
+              Search Results <span className="text-gray-500">({searchResults.length} medications found)</span>
+            </h3>
+            <button 
+              onClick={handleClearSearch} 
+              className="text-sm text-gray-600 hover:text-primary-700 flex items-center"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Clear search
+            </button>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {searchResults.map((medication) => (
+              <MedicationCard
+                key={medication.id}
+                medication={medication}
+                onClick={() => handleSelectMedication(medication.id || "")}
+              />
+            ))}
+          </div>
+        </>
       )}
     </main>
   );

@@ -29,9 +29,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json(cachedResults);
       }
       
+      console.log(`Searching FDA API for: "${query}"`);
+      
       // Build FDA API URL with search parameters - using OR for broader results
       const encodedQuery = encodeURIComponent(query);
       const apiUrl = `${FDA_API_BASE_URL}?search=(openfda.generic_name:"${encodedQuery}"+OR+openfda.brand_name:"${encodedQuery}"+OR+openfda.substance_name:"${encodedQuery}")&limit=10`;
+      
+      console.log(`FDA API URL: ${apiUrl}`);
       
       const response = await axios.get(apiUrl, {
         headers: FDA_API_KEY ? { "api_key": FDA_API_KEY } : {}

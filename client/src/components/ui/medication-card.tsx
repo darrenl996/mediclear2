@@ -13,7 +13,7 @@ export function MedicationCard({ medication, onClick }: MedicationCardProps) {
   
   return (
     <Card 
-      className="bg-white cursor-pointer transition-shadow hover:shadow-md" 
+      className="bg-white cursor-pointer transition-all duration-200 hover:shadow-lg hover:scale-[1.01]" 
       onClick={onClick}
     >
       <CardHeader className="bg-primary-500 px-4 py-3 flex flex-row justify-between items-center">
@@ -21,11 +21,11 @@ export function MedicationCard({ medication, onClick }: MedicationCardProps) {
           {medication.generic_name || "Unknown Medication"}
         </h3>
         {isPrescription ? (
-          <Badge className="bg-white text-primary-700 hover:bg-white">
+          <Badge className="bg-white text-primary-700 hover:bg-white/90">
             Prescription Only
           </Badge>
         ) : (
-          <Badge className="bg-white text-green-700 hover:bg-white">
+          <Badge className="bg-white text-green-700 hover:bg-white/90">
             OTC
           </Badge>
         )}
@@ -60,6 +60,12 @@ export function MedicationCard({ medication, onClick }: MedicationCardProps) {
             </p>
           </div>
         )}
+        
+        <div className="flex justify-end mt-3 pt-2 border-t border-gray-100">
+          <Badge className="bg-primary-50 text-primary-700 hover:bg-primary-100 cursor-pointer">
+            View Details →
+          </Badge>
+        </div>
       </CardContent>
     </Card>
   );
