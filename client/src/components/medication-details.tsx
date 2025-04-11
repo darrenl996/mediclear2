@@ -67,18 +67,17 @@ export default function MedicationDetails({ medicationId }: MedicationDetailsPro
       
       <NavTabs activeTab={activeTab} onTabChange={handleTabChange} />
       
-      <div className="grid md:grid-cols-3 gap-6">
-        <div className="md:col-span-2">
-          {activeTab === "warnings" && <WarningsSection medication={medication} />}
-          {activeTab === "usage" && <UsageSection medication={medication} />}
-          {activeTab === "dosage" && <DosageSection medication={medication} />}
-        </div>
-        
-        <div className="md:col-span-1">
-          <SideEffectsSection medication={medication} />
-          <DrugInteractionsSection medication={medication} />
-          <ResourcesSection />
-        </div>
+      <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+        {/* Show only the active tab content */}
+        {activeTab === "warnings" && <WarningsSection medication={medication} />}
+        {activeTab === "usage" && <UsageSection medication={medication} />}
+        {activeTab === "dosage" && <DosageSection medication={medication} />}
+        {activeTab === "side-effects" && <SideEffectsSection medication={medication} />}
+        {activeTab === "interactions" && <DrugInteractionsSection medication={medication} />}
+      </div>
+      
+      <div className="bg-gray-50 rounded-lg p-4 mt-4">
+        <ResourcesSection />
       </div>
     </div>
   );

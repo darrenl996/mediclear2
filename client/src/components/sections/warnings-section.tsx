@@ -43,105 +43,103 @@ export default function WarningsSection({ medication }: WarningsSectionProps) {
   const simplifiedDoNotUse = simplifyMedicalTerms(doNotUse);
 
   return (
-    <section id="warnings" className="mb-8">
-      <Card className="bg-white rounded-lg shadow-md overflow-hidden">
-        <CardHeader className="border-b border-gray-200 px-6 py-4">
-          <h2 className="text-xl font-bold text-gray-900 flex items-center">
-            <AlertTriangle className="h-6 w-6 text-red-500 mr-2" />
-            Warnings & Precautions
-          </h2>
-        </CardHeader>
+    <section id="warnings">
+      <h2 className="text-xl font-bold text-gray-900 flex items-center mb-4">
+        <AlertTriangle className="h-6 w-6 text-red-500 mr-2" />
+        Warnings & Precautions
+      </h2>
+      
+      <div className="space-y-4">
+        {hasBoxedWarning && (
+          <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <AlertTriangle className="h-5 w-5 text-red-500" />
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-red-800">Boxed Warning</h3>
+                <div className="mt-2 text-sm text-red-700 font-body">
+                  <p>{simplifiedBoxedWarning}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         
-        <CardContent className="px-6 py-4 space-y-4">
-          {hasBoxedWarning && (
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <AlertTriangle className="h-5 w-5 text-red-500" />
-                </div>
-                <div className="ml-3">
-                  <h3 className="text-sm font-medium text-red-800">Boxed Warning</h3>
-                  <div className="mt-2 text-sm text-red-700 font-body">
-                    <p>{simplifiedBoxedWarning}</p>
-                  </div>
+        {hasPregnancyWarning && (
+          <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <AlertTriangle className="h-5 w-5 text-amber-500" />
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-amber-800">Pregnancy & Breastfeeding Warning</h3>
+                <div className="mt-2 text-sm text-amber-700 font-body">
+                  <p>{simplifiedPregnancyWarning}</p>
                 </div>
               </div>
             </div>
-          )}
-          
-          {hasPregnancyWarning && (
-            <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <AlertTriangle className="h-5 w-5 text-amber-500" />
-                </div>
-                <div className="ml-3">
-                  <h3 className="text-sm font-medium text-amber-800">Pregnancy & Breastfeeding Warning</h3>
-                  <div className="mt-2 text-sm text-amber-700 font-body">
-                    <p>{simplifiedPregnancyWarning}</p>
-                  </div>
+          </div>
+        )}
+        
+        {hasDoNotUse && (
+          <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <AlertTriangle className="h-5 w-5 text-amber-500" />
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-amber-800">Do Not Use</h3>
+                <div className="mt-2 text-sm text-amber-700 font-body">
+                  <p>{simplifiedDoNotUse}</p>
                 </div>
               </div>
             </div>
-          )}
-          
-          {hasDoNotUse && (
-            <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <AlertTriangle className="h-5 w-5 text-amber-500" />
-                </div>
-                <div className="ml-3">
-                  <h3 className="text-sm font-medium text-amber-800">Do Not Use</h3>
-                  <div className="mt-2 text-sm text-amber-700 font-body">
-                    <p>{simplifiedDoNotUse}</p>
-                  </div>
-                </div>
-              </div>
+          </div>
+        )}
+        
+        {whoShouldNotTake.length > 0 && (
+          <div className="bg-white border border-gray-200 rounded-lg p-4">
+            <h3 className="font-medium text-gray-900 mb-2">Who should not take this medication?</h3>
+            <ul className="list-disc pl-5 text-gray-700 font-body space-y-2">
+              {whoShouldNotTake.map((warning, index) => (
+                <li key={index}>{simplifyMedicalTerms(warning)}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        
+        {talkToDoctor.length > 0 && (
+          <div className="bg-white border border-gray-200 rounded-lg p-4">
+            <h3 className="font-medium text-gray-900 mb-2">Talk to your doctor before using if you have:</h3>
+            <ul className="list-disc pl-5 text-gray-700 font-body space-y-2">
+              {talkToDoctor.map((warning, index) => (
+                <li key={index}>{simplifyMedicalTerms(warning)}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        
+        {warningParagraphs.length > 0 && !(whoShouldNotTake.length > 0 || talkToDoctor.length > 0) && (
+          <div className="bg-white border border-gray-200 rounded-lg p-4">
+            <h3 className="font-medium text-gray-900 mb-2">General Warnings</h3>
+            <div className="text-gray-700 font-body space-y-3">
+              {warningParagraphs.map((paragraph, index) => (
+                <p key={index} className="mb-2">{simplifyMedicalTerms(paragraph)}</p>
+              ))}
             </div>
-          )}
-          
-          {whoShouldNotTake.length > 0 && (
-            <>
-              <h3 className="font-medium text-gray-900 mt-4">Who should not take this medication?</h3>
-              <ul className="list-disc pl-5 text-gray-700 font-body space-y-1">
-                {whoShouldNotTake.map((warning, index) => (
-                  <li key={index}>{simplifyMedicalTerms(warning)}</li>
-                ))}
-              </ul>
-            </>
-          )}
-          
-          {talkToDoctor.length > 0 && (
-            <>
-              <h3 className="font-medium text-gray-900 mt-4">Talk to your doctor before using if you have:</h3>
-              <ul className="list-disc pl-5 text-gray-700 font-body space-y-1">
-                {talkToDoctor.map((warning, index) => (
-                  <li key={index}>{simplifyMedicalTerms(warning)}</li>
-                ))}
-              </ul>
-            </>
-          )}
-          
-          {warningParagraphs.length > 0 && !(whoShouldNotTake.length > 0 || talkToDoctor.length > 0) && (
-            <>
-              <h3 className="font-medium text-gray-900 mt-4">General Warnings</h3>
-              <div className="text-gray-700 font-body space-y-3">
-                {warningParagraphs.map((paragraph, index) => (
-                  <p key={index}>{simplifyMedicalTerms(paragraph)}</p>
-                ))}
-              </div>
-            </>
-          )}
-          
-          {!hasBoxedWarning && !hasPregnancyWarning && warningParagraphs.length === 0 && (
+          </div>
+        )}
+        
+        {!hasBoxedWarning && !hasPregnancyWarning && warningParagraphs.length === 0 && (
+          <div className="bg-gray-50 p-4 rounded-lg text-center">
             <p className="text-gray-700">
               No specific warnings information is available for this medication. 
               Always consult your healthcare provider before use.
             </p>
-          )}
-        </CardContent>
-      </Card>
+          </div>
+        )}
+      </div>
     </section>
   );
 }
