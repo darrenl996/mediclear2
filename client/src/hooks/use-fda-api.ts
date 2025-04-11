@@ -8,7 +8,11 @@ export const useSearchMedications = (query: string) => {
   return useQuery({
     queryKey: ['/api/drugs/search', query],
     queryFn: async () => {
-      const res = await fetch(`/api/drugs/search?q=${encodeURIComponent(query)}`, {
+      if (!query || query.trim().length === 0) {
+        return [];
+      }
+      
+      const res = await fetch(`/api/drugs/search?q=${encodeURIComponent(query.trim())}`, {
         credentials: 'include',
       });
       
@@ -23,6 +27,7 @@ export const useSearchMedications = (query: string) => {
     },
     enabled: query.length > 2, // Only run query when user has typed at least 3 characters
     staleTime: 1000 * 60 * 5, // 5 minutes
+    retry: 1, // Limit retries to avoid flooding API
   });
 };
 
@@ -31,7 +36,11 @@ export const useMedicationSuggestions = (query: string) => {
   return useQuery({
     queryKey: ['/api/drugs/suggestions', query],
     queryFn: async () => {
-      const res = await fetch(`/api/drugs/suggestions?q=${encodeURIComponent(query)}`, {
+      if (!query || query.trim().length === 0) {
+        return [];
+      }
+      
+      const res = await fetch(`/api/drugs/suggestions?q=${encodeURIComponent(query.trim())}`, {
         credentials: 'include',
       });
       
@@ -43,6 +52,7 @@ export const useMedicationSuggestions = (query: string) => {
     },
     enabled: query.length > 2,
     staleTime: 1000 * 60 * 5, // 5 minutes
+    retry: 1, // Limit retries to avoid flooding API
   });
 };
 

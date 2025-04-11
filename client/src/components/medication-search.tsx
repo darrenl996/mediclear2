@@ -39,7 +39,7 @@ export function MedicationSearch({ onSelectMedication }: MedicationSearchProps) 
 
   // Handle search input change
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value;
+    const query = e.target.value.trim();
     debouncedSearch(query);
     
     if (query.length > 2) {

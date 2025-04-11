@@ -29,8 +29,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json(cachedResults);
       }
       
-      // Build FDA API URL with search parameters
-      const apiUrl = `${FDA_API_BASE_URL}?search=(openfda.generic_name:"${query}"+openfda.brand_name:"${query}"+openfda.substance_name:"${query}")&limit=10`;
+      // Build FDA API URL with search parameters - using OR for broader results
+      const encodedQuery = encodeURIComponent(query);
+      const apiUrl = `${FDA_API_BASE_URL}?search=(openfda.generic_name:"${encodedQuery}"+OR+openfda.brand_name:"${encodedQuery}"+OR+openfda.substance_name:"${encodedQuery}")&limit=10`;
       
       const response = await axios.get(apiUrl, {
         headers: FDA_API_KEY ? { "api_key": FDA_API_KEY } : {}
@@ -208,7 +209,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Build FDA API URL for suggestions (using a smaller limit for quick responses)
-      const apiUrl = `${FDA_API_BASE_URL}?search=(openfda.generic_name:"${query}"+openfda.brand_name:"${query}"+openfda.substance_name:"${query}")&limit=5`;
+      const encodedQuery = encodeURIComponent(query);
+      const apiUrl = `${FDA_API_BASE_URL}?search=(openfda.generic_name:"${encodedQuery}"+OR+openfda.brand_name:"${encodedQuery}"+OR+openfda.substance_name:"${encodedQuery}")&limit=5`;
       
       const response = await axios.get(apiUrl, {
         headers: FDA_API_KEY ? { "api_key": FDA_API_KEY } : {}
