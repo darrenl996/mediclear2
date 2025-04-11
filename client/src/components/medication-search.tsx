@@ -9,6 +9,13 @@ interface MedicationSearchProps {
   onSelectMedication: (medicationId: string) => void;
 }
 
+interface SuggestionItem {
+  id: string;
+  generic_name: string;
+  brand_name?: string;
+  purpose?: string;
+}
+
 export function MedicationSearch({ onSelectMedication }: MedicationSearchProps) {
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -142,7 +149,7 @@ export function MedicationSearch({ onSelectMedication }: MedicationSearchProps) 
           ref={suggestionsRef}
           className="mt-1 shadow-lg rounded-md bg-white absolute z-10 w-full"
         >
-          {suggestions.map((suggestion) => (
+          {suggestions.map((suggestion: SuggestionItem) => (
             <div 
               key={suggestion.id}
               className="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100"
