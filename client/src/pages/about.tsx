@@ -12,11 +12,11 @@ export default function About() {
         <CardContent>
           <p className="text-gray-700 mb-4">
             MediClear was developed with a clear mission: to simplify complex medication information 
-            and make it accessible to everyone. We believe that understanding your medications 
-            shouldn't require a medical degree.
+            and make it accessible to everyone. I believe that understanding your medications 
+            shouldn't require a medical degree. 
           </p>
           <p className="text-gray-700">
-            By leveraging the OpenFDA API, we transform technical medical data into clear, 
+            By leveraging the OpenFDA API, I transform technical medical data into clear, 
             straightforward language that helps you make informed decisions about your health.
           </p>
         </CardContent>
@@ -38,7 +38,7 @@ export default function About() {
             <li>
               <span className="font-medium">Review simplified information</span>
               <p className="mt-1">
-                We present FDA-approved medication information in a user-friendly format, 
+                MediClear present FDA-approved medication information in a user-friendly format, 
                 organizing it into clear sections like warnings, usage instructions, 
                 and side effects.
               </p>
