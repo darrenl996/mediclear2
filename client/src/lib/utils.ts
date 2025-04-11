@@ -85,11 +85,35 @@ export function simplifyMedicalTerms(text: string): string {
 export function formatParagraphs(text: string): string[] {
   if (!text) return [];
   
-  // Split text into paragraphs and filter out empty ones
-  return text
-    .split(/\n+/)
-    .map(paragraph => paragraph.trim())
-    .filter(paragraph => paragraph.length > 0);
+  // First try splitting by double newlines (traditional paragraphs)
+  const paragraphs = text.split(/\n\s*\n/)
+    .map(p => p.trim())
+    .filter(p => p.length > 0);
+  
+  // If we have multiple paragraphs, return them
+  if (paragraphs.length > 1) {
+    return paragraphs;
+  }
+  
+  // Otherwise, try splitting by single newlines
+  const lines = text.split(/\n/)
+    .map(line => line.trim())
+    .filter(line => line.length > 0);
+  
+  // If we have multiple lines, return them
+  if (lines.length > 1) {
+    return lines;
+  }
+  
+  // If everything else fails, split by periods followed by space
+  if (text.length > 100 && text.includes('. ')) {
+    return text.split(/\.\s+/)
+      .map(sentence => sentence.trim() + '.')
+      .filter(sentence => sentence.length > 4); // Avoid tiny fragments
+  }
+  
+  // Last resort: return the original text
+  return [text];
 }
 
 export function isPrescriptionOnly(medication: any): boolean {
