@@ -10,6 +10,7 @@ interface MedicationSearchProps {
 }
 
 export function MedicationSearch({ onSelectMedication }: MedicationSearchProps) {
+  const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -33,16 +34,19 @@ export function MedicationSearch({ onSelectMedication }: MedicationSearchProps) 
   // Create debounced version of search function
   const debouncedSearch = useRef(
     debounce((query: string) => {
-      setSearchQuery(query);
+      if (query.length >= 2) {
+        setSearchQuery(query);
+      }
     }, 300)
   ).current;
 
   // Handle search input change
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value.trim();
-    debouncedSearch(query);
+    const query = e.target.value;
+    setInputValue(query);
+    debouncedSearch(query.trim());
     
-    if (query.length > 2) {
+    if (query.trim().length > 2) {
       setShowSuggestions(true);
     } else {
       setShowSuggestions(false);
@@ -53,7 +57,9 @@ export function MedicationSearch({ onSelectMedication }: MedicationSearchProps) 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (searchQuery.length < 2) {
+    const query = inputValue.trim();
+    
+    if (query.length < 2) {
       toast({
         title: "Search query too short",
         description: "Please enter at least 2 characters to search.",
@@ -62,6 +68,7 @@ export function MedicationSearch({ onSelectMedication }: MedicationSearchProps) 
       return;
     }
     
+    setSearchQuery(query);
     setShowSuggestions(false);
     refetchSearch();
   };
@@ -115,7 +122,7 @@ export function MedicationSearch({ onSelectMedication }: MedicationSearchProps) 
           className="pl-10 pr-20 py-6 text-lg rounded-lg shadow-md"
           placeholder="Search for a medication (e.g., 'Lisinopril', 'Metformin')"
           onChange={handleSearchInput}
-          defaultValue={searchQuery}
+          value={inputValue}
         />
         <Button 
           type="submit" 
