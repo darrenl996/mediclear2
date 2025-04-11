@@ -21,6 +21,8 @@ export default function Home() {
   const handleSubmitSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchValue.trim().length >= 2) {
+      // Clear any selected medication when performing a new search
+      setSelectedMedicationId(null);
       setSearchTerm(searchValue.trim());
     }
   };
@@ -33,6 +35,18 @@ export default function Home() {
     setSelectedMedicationId(medicationId);
     // Scroll to top when a medication is selected
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  
+  // Add a "Back to results" function
+  const handleBackToResults = () => {
+    setSelectedMedicationId(null);
+  };
+  
+  // Add a "Clear search" function for better UX
+  const handleClearSearch = () => {
+    setSearchValue("");
+    setSearchTerm("");
+    setSelectedMedicationId(null);
   };
 
   return (
@@ -105,7 +119,20 @@ export default function Home() {
 
       {/* Selected Medication Details */}
       {selectedMedicationId && (
-        <MedicationDetails medicationId={selectedMedicationId} />
+        <>
+          <div className="max-w-3xl mx-auto mb-6">
+            <button 
+              onClick={handleBackToResults} 
+              className="flex items-center text-primary-600 hover:text-primary-800"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              Back to search results
+            </button>
+          </div>
+          <MedicationDetails medicationId={selectedMedicationId} />
+        </>
       )}
 
       {/* Search Results */}
